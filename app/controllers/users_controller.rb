@@ -1,10 +1,8 @@
 class UsersController < ApplicationController
-  
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:show, :edit, :update]
   before_action :check_user, only: [:edit, :update]
   
   def show
-    @user = User.find(params[:id])
   end
     
   def new
@@ -44,11 +42,11 @@ class UsersController < ApplicationController
   end
   
   def check_user
-    @user = User.find(params[:id])
     if @user != current_user
       flash[:danger] = '不正なアクセスです'
       redirect_to root_path
     end
+    #redirect_to root_path if @user != current_user
   end
   
 end
