@@ -7,7 +7,8 @@ class MicropostsController < ApplicationController
            flash[:success] = "Micropost created!"
            redirect_to root_url
        else
-           render 'stagic_page/home'
+           flash[:danger] = 'This Micropost is required'
+           redirect_to root_path
        end
     end
     
