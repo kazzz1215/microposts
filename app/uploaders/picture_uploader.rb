@@ -7,11 +7,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  if Rails.new.production?
-    include Cloudinary::CarrierWave
-  else
-    storage :file
-  end
+  storage :file
   
   # storage :fog
 
