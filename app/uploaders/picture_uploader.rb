@@ -7,7 +7,12 @@ class PictureUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
+  if Rails.new.production?
+    include Cloudinary::CarrierWave
+  else
+    storage :file
+  end
+  
   # storage :fog
 
   # Override the directory where uploaded files will be stored.
@@ -41,18 +46,17 @@ class PictureUploader < CarrierWave::Uploader::Base
   def extension_white_list
      %w(jpg jpeg gif png)
   end
-
- # 日付(20131001.jpgみたいなファイル名)で保存する
+  
+  # 拡張子が同じでないとGIFをJPGとかにコンバートできないので、ファイル名を変更
   def filename
-    time = Time.now
-    name = time.strftime('%Y%m%d%H%M%S') + '.jpg'
-    name.downcase
+    super.chomp(File.extname(super)) + '.jpg' if original_filename.present?
   end
+  
   
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   # def filename
   #   "something.jpg" if original_filename
   # end
-
+  
 end
